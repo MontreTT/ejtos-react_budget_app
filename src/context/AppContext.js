@@ -78,7 +78,7 @@ export const AppReducer = (state, action) => {
 
 // 1. Sets the initial state when the app loads
 const initialState = {
-    budget: 2000,
+    budget: 20000,
     expenses: [
         { id: "Marketing", name: 'Marketing', cost: 50 },
         { id: "Finance", name: 'Finance', cost: 300 },
@@ -91,6 +91,7 @@ const initialState = {
 
 // 2. Creates the context this is the thing our components import and use to get the state
 export const AppContext = createContext();
+
 
 // 3. Provider component - wraps the components we want to give access to the state
 // Accepts the children, which are the nested(wrapped) components
@@ -106,6 +107,9 @@ export const AppProvider = (props) => {
         remaining = state.budget - totalExpenses;
     }
 
+    const setCurrency = (currency) => {
+        dispatch({ type: 'CHG_CURRENCY', payload: currency });
+    };
     return (
         <AppContext.Provider
             value={{
@@ -113,7 +117,8 @@ export const AppProvider = (props) => {
                 budget: state.budget,
                 remaining: remaining,
                 dispatch,
-                currency: state.currency
+                currency: state.currency,
+                setCurrency // Expose setCurrency method to components
             }}
         >
             {props.children}
